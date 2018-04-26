@@ -5,6 +5,12 @@
 /rest-service/bin/
 /rest-service/build/
 /gradle-start/bin/
+/auto-required/bin/
+/auto-required/build/
+/application-event/.settings
+/gradle-start/.settings
+/rest-service/.settings
+/auto-required/.settings
 
 # Ignore Gradle GUI config
 gradle-app.setting
@@ -21,9 +27,6 @@ gradle-app.setting
 # Ignore eclipse project files
 .classpath
 .project
-/application-event/.settings
-/gradle-start/.settings
-/rest-service/.settings
 
 # Ignore vscode
 /.vscode/
