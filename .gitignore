@@ -1,5 +1,10 @@
 .gradle
 /build/
+/application-event/bin/
+/application-event/build/
+/rest-service/bin/
+/rest-service/build/
+/gradle-start/bin/
 
 # Ignore Gradle GUI config
 gradle-app.setting
@@ -12,3 +17,13 @@ gradle-app.setting
 
 # # Work around https://youtrack.jetbrains.com/issue/IDEA-116898
 # gradle/wrapper/gradle-wrapper.properties
+
+# Ignore eclipse project files
+.classpath
+.project
+/application-event/.settings
+/gradle-start/.settings
+/rest-service/.settings
+
+# Ignore vscode
+/.vscode/

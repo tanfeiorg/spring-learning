@@ -1,0 +1,31 @@
+// java plugin. Used to build the java project.
+apply plugin: 'java'
+apply plugin: 'eclipse'
+
+// A maven Central repository. All the dependencies are retrieved from here.
+repositories {
+    mavenCentral()
+}
+
+sourceCompatibility = 1.8
+targetCompatibility = 1.8
+
+// The required dependencies.
+dependencies {
+    // "compile" indicating that it should be available during compile-time (and if you were building a WAR file, included in the /WEB-INF/libs folder of the WAR)
+    compile "joda-time:joda-time:2.2"
+    // "testCompile" used for compiling and running tests, but not required for building or running the project’s runtime code.
+    testCompile "junit:junit:4.12"
+    // "providedCompile" Required dependencies for compiling the project code, but that will be provided at runtime by a container running the code (for example, the Java Servlet API)
+}
+
+// The output jar file name is gs-gradle-0.1.0.jar
+jar {
+    baseName = 'gs-gradle'
+    version =  '0.1.0'
+}
+
+// application plugin. Used to package an distrubition app zip.
+apply plugin: 'application'
+// The main java class name
+mainClassName = 'hello.HelloWorld'
