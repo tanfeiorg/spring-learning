@@ -1,5 +1,6 @@
 // java plugin. Used to build the java project.
 apply plugin: 'java'
+apply plugin: 'eclipse'
 
 // A maven Central repository. All the dependencies are retrieved from here.
 repositories {
