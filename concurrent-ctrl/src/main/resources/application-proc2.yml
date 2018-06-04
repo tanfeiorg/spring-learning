@@ -1,0 +1,7 @@
+server:
+  port: 8086
+spring:
+  datasource:
+    url: jdbc:postgresql://localhost:5432/mydb?ApplicationName=mydb
+    username: dbuser
+    password: "s3pAdmin"
