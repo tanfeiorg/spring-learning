@@ -11,7 +11,7 @@ import org.springframework.scheduling.concurrent.ThreadPoolTaskScheduler;
 @EnableScheduling
 @EnableAspectJAutoProxy
 public class Application {
-	private static final int THREADS_COUNT = 2;
+	private static final int THREADS_COUNT = 4;
 
 	public static void main(String[] args) {
 		SpringApplication.run(Application.class, args);

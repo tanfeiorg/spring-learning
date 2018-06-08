@@ -6,7 +6,6 @@ import org.aspectj.lang.annotation.Aspect;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.dao.DuplicateKeyException;
 import org.springframework.stereotype.Component;
 
 import com.sap.cloud.platform.mobile.services.framework.locks.api.LockExpiredException;
@@ -54,38 +53,56 @@ public class RunWithLockerAspect {
 		}
 		log.info("expiryInMinute: {}", expiryInMinute);
 
-		// acquire locker may sometimes fail with DuplicateKeyException (if two threads
-		// are started at the same timestamp), so we will retry 3 attempts.
 		Locker lock = lockerFactory.createLocker(lockerName, expiryInMinute * 60000);
-		int numAttempts = 0;
-		DuplicateKeyException lockFailureException;
-		do {
-			numAttempts++;
-			lockFailureException = null;
-			try {
-				log.info("Acquire locker {} on {} attempt(s).", lockerName, numAttempts);
-				lock.acquire();
-				break;
-			} catch (DuplicateKeyException ex) {
-				log.warn("Cannot acquire locker. Caused by: {}", ex.toString());
-				lockFailureException = ex;
-			}
-		} while (numAttempts < MAX_RETRIES);
-		if (lockFailureException != null) {
-			throw lockFailureException;
-		}
+		lock.acquire();
 		try {
 			return pjp.proceed();
 		} finally {
-			// release locker
 			try {
 				log.info("Release locker {}", lockerName);
 				lock.release();
 			} catch (NoSuchLockException | LockExpiredException | LockNotHeldException e) {
 				log.info("Error occurs when release locker. But it should not have any impacts. Caused by: {}",
-						e.getMessage());
+						e.toString());
 			}
 		}
+		// // acquire locker may sometimes fail with DuplicateKeyException (if two
+		// threads
+		// // are started at the same timestamp), so we will retry 3 attempts.
+		// Locker lock = lockerFactory.createLocker(lockerName, expiryInMinute * 60000);
+		// int numAttempts = 0;
+		// DuplicateKeyException lockFailureException;
+		// do {
+		// numAttempts++;
+		// lockFailureException = null;
+		// try {
+		// log.info("Acquire locker {} on {} attempt(s).", lockerName, numAttempts);
+		// lock.acquire();
+		// break;
+		// } catch (DuplicateKeyException ex) {
+		// log.warn("Cannot acquire locker. Caused by: {}", ex.toString());
+		// lockFailureException = ex;
+		// // Sleep for a random timespan and retry
+		// Thread.sleep(ThreadLocalRandom.current().nextLong(50L, 1000L));
+		// }
+		// } while (numAttempts < MAX_RETRIES);
+		// if (lockFailureException != null) {
+		// throw lockFailureException;
+		// }
+		// try {
+		// return pjp.proceed();
+		// } finally {
+		// // release locker
+		// try {
+		// log.info("Release locker {}", lockerName);
+		// lock.release();
+		// } catch (NoSuchLockException | LockExpiredException | LockNotHeldException e)
+		// {
+		// log.info("Error occurs when release locker. But it should not have any
+		// impacts. Caused by: {}",
+		// e.getMessage());
+		// }
+		// }
 	}
 
 }
