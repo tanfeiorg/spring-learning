@@ -1,0 +1,6 @@
+server:
+  port: 8085
+
+logging:
+  level:
+    com.sap.cloud.platform.mobile.services.framework.locks.core.Locker: 'DEBUG'
